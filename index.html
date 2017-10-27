@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ctrol + 鼠标滚轮 实现缩放效果</title>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+        }
+        #div {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+<div id="div"></div>
+<script src="./jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    var div = $('#div');
+    //  Firefox 下的滚轮事件为 DOMMouseScroll，其他浏览器为 mousewheel
+    $(window).bind('mousewheel DOMMouseScroll', function(e) {
+        var direct = 0; // 滚轮滚动的方向：1为向上，-1为向下
+
+        if(e.ctrlKey){
+            // e.originalEvent.wheelDelta 为兼容 Chrome & IE的写法，e.originalEvent.detail 为兼容 Firefox 的写法
+            if(e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0){
+                direct = 1;
+            } else {
+                direct = -1;
+            }
+        }
+        console.log('方向：' + direct);
+        scrollGo(direct);
+    });
+
+    function scrollGo(d){
+        var $width = parseInt(div.width());
+        var $height = parseInt(div.height());
+
+        if(d > 0){
+            $width += 1;
+            $height += 1;
+        }else if(d < 0){
+            $width -= 1;
+            $height -= 1;
+        }
+        div.width($width).height($height);
+        console.log('宽度:' + div.width(),'高度:' + div.height());
+    }
+</script>
+</body>
+</html>
